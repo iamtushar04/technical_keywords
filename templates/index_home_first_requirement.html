@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="container-fluid text-start ">
+    <div class="container-fluid" name="heading">
+      <div class="row justify-content-start">
+        <div class="col-md-3 " name="keyword" style="height:250px;">
+            <h5> Keywords</h5>
+            <div class="list-group">
+                <select class="list-group keyword-list" id="item-list1" size="3">
+                    {% for item in keywords_ %}
+                            <option class="list-group-item list-group-item-action" value="{{ item.id }}">{{ item.keyword }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="col-md-7 tech-words" name="technical_words">
+            <h5> Technical Words</h5>
+            <iframe id="tech_words" name="tech_words" sandbox="allow-scripts" srcdoc=""></iframe>
+<!--            <textarea class="form-control" id="exampleFormControlTextarea1" rows="15"></textarea>-->
+        </div>
+        <div class="col" name="crud_buttons" style="padding:5px">
+            </br>
+            <button type="button" class="btn btn-secondary" id="1" name="add_keyword" style="width:150px">Add Keyword</button>
+            </br></br>
+            <button type="button" class="btn btn-secondary" id="2" name="update" style="width:150px">Update</button></br>
+            </br>
+            <button type="button" class="btn btn-secondary" id="3" name="import" style="width:150px">Import</button></br>
+            </br>
+            <button type="button" class="btn btn-secondary" id="4" name="copy" style="width:150px">Copy</button></br>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+{% endblock %}

@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block content %}
+    {% with messages =  get_flashed_messages(with_categories=true) %}
+    {% for category, msg in messages %}
+        {% if category == 'success' %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+              {{msg}}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endif %}
+        {% if category == 'error'%}
+            <div class="alert alert-danger alert-dismissible fade show mb-3" role="alert">
+              {{msg}}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endif %}
+    {% endfor %}
+    {% endwith %}
+<!--    <div class="container-lg">-->
+<!--        <form class="row gy-2 gx-3 align-items-center" style="padding:10px;" action="/search" method="GET">-->
+<!--            <div class="col-sm-6">-->
+<!--                <input type="text" class="form-control form-control-sm" placeholder="Search" name="q" value="{{request.args['q']}}">-->
+<!--            </div>-->
+<!--            <div class="col-auto">-->
+<!--                <button type="submit" class="btn btn-danger search-keyword">Search</button>-->
+<!--            </div>-->
+<!--        </form>-->
+<!--    </div>-->
+
+    <div class="container-fluid data-container" style="padding-left:100px;padding-right:100px;">
+        <div class="row">
+            <div class="col">
+                <div class="table-responsive " style="height: 535px; overflow: auto; padding-bottom:10px'">
+                    <table class="table table-borderless align-middle "  id="scrollable-table">
+                        <thead>
+                            <th style="color:#B90000; width:25%">Keyword</th>
+                            <th style="color:#B90000; width:75%;">Technical-words</th>
+                        </thead>
+                        <tbody id="results">
+                            {% for result in keywords_ %}
+                                <tr>
+                                    <td>{{ result.keyword }}</td>
+                                    <td>{{ result.tech_words }}</td>
+                                </tr>
+                            {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <script>
+        window.addEventListener('DOMContentLoaded', (event) => {
+            // Get the table headers
+            const headers = document.querySelectorAll('#scrollable-table thead th');
+            const table = document.getElementById('scrollable-table');
+
+            // Add a scroll event listener to the table body
+            table.addEventListener('scroll', function () {
+                // Get the horizontal scroll position
+                const scrollLeft = this.scrollLeft;
+
+                // Apply the fixed-headers class to each table header
+                headers.forEach((header) => {
+                    header.style.transform = `translateX(${-scrollLeft}px)`;
+                });
+            });
+        });
+    </script>
+
+
+{% endblock %}

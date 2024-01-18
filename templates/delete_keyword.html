@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+    {% with messages =  get_flashed_messages(with_categories=true) %}
+        {% for category, msg in messages %}
+            {% if category == 'success' %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                  {{msg}}
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endif %}
+            {% if category == 'error'%}
+                <div class="alert alert-danger alert-dismissible fade show mb-3" role="alert">
+                  {{msg}}
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endwith %}
+    <div class="form-container align-items-center">
+        <form class="row g-3" style="height:535px;" action="{{ url_for('delete_keyword') }}" method="POST">
+            {{ form.hidden_tag() }}
+            <div class="col-sm-2 offset-2">
+                <label for="keyword" class="form-label">Keyword</label>
+                <input type="text" class="form-control" id="keyword" name="keyword" required>
+            </div>
+            <div class="col">
+                <button type="submit" class="btn btn-danger">Delete</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}

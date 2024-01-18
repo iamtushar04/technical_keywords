@@ -1,0 +1,25 @@
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">
+      <img src="https://www.wissenresearch.com/wp-content/uploads/2022/04/logo.jpg" width="200" height="70">
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{{url_for('home')}}">Home</a>
+        </li>
+          <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="{{url_for('add_keyword')}}">Add Keyword</a>
+        </li>
+      </ul>
+    </div>
+    <form method="POST" class="d-flex" role="search" action="{{ url_for('new_search') }}">
+      {{ form.hidden_tag() }}
+      <input id="keyword" name="keyword" type="text" class="form-control me-2" placeholder="Search Keyword" required>
+      <button class="btn btn-outline-success" type="submit">Search</button>
+    </form>
+  </div>
+</nav>

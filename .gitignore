@@ -1,0 +1,4 @@
+*.xlsx
+learning/
+.idea/
+/__pycache__/*.*

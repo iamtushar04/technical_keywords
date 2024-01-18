@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+    {% with messages =  get_flashed_messages(with_categories=true) %}
+        {% for category, msg in messages %}
+            {% if category == 'success' %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                  {{msg}}
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endif %}
+            {% if category == 'error'%}
+                <div class="alert alert-danger alert-dismissible fade show mb-3" role="alert">
+                  {{msg}}
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endwith %}
+    <div class="form-container align-items-center">
+<!--        <h5>Data Entry Form</h5>-->
+        <form class="row g-3" style="height:535px;" action="{{ url_for('add_keyword') }}" method="POST">
+            {{ form.hidden_tag() }}
+            <div class="col-sm-2 offset-2">
+                <label for="keyword" class="form-label">Keyword</label>
+                <input type="text" class="form-control" id="keyword" name="keyword" required>
+            </div>
+                <div class="col-sm-5">
+                <label for="tech_words" class="form-label">Technical-Words</label>
+                <input type="text" class="form-control" id="tech_words" name="tech_words" required>
+            </div>
+            <div class="col">
+                <button type="submit" class="btn btn-danger">Save</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}
