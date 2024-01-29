@@ -5,3 +5,5 @@ learning/
 __pycache__
 venv
 database/*.db
+venv
+**/__pycache__/

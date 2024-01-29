@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="container-fluid" style="height:530px;">
+        <div class="row">
+            <!-- Left column (70% width) for the form -->
+            <div class="col-md-8 query-section" style="padding-top:30px;height:400px; overflow-y: auto;">
+                <form action="{{ url_for('home') }}" method="post">
+                    <div id="elements-container">
+                        <div class="element" style="padding-bottom:10px;">
+                            <input type="text" placeholder="keyword" name="keyword" required oninput="fetchSynonyms(this)">
+                            <input type="text" placeholder="synonyms" name="synonyms" style="width:400px;" required >
+                            <select name="types"  style="height:30px;">
+                                <option value="None">Types</option>
+                                <option value="TI">Title</option>
+                                <option value="CLMS">All Claims</option>
+                                <option value="AB">Abstract</option>
+                                <option value="ICLM">Independent Claims</option>
+                            </select>
+                            <select name="conditions" id="conditions" style="height:30px;">
+                                <option value="None"> Condtion </option>
+                                <option value="AND">AND</option>
+                                <option value="NEAR">NEAR</option>
+                            </select>
+                            <input type="text" placeholder="Distance" name="distance" id="distanceTextBox" style="width:40px;">
+                            <button type="button" class="btn btn-success btn-sm add-more" onclick="addMore(this)" id="add"> + </button>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary" id="save-button">Generate</button>
+                </form>
+            </div>
+
+            <!-- Right column (30% width) for the result -->
+            <div class="col-md-4 result">
+                <label for="result" class="form-label">Output:</label>
+                <div id="result-container" class="mb-3"  style="height:400px;width:400px; overflow-y: auto;">
+                    <textarea id="result" name="result" readonly style="height:100%;width:100%; box-sizing: border-box; padding-top: 0;"> {{ result }}</textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function fetchSynonyms(input) {
+            const keyword = input.value;
+
+            if (keyword.trim() !== '') {
+                try {
+                    const response = await fetch(`/search?keyword=${encodeURIComponent(keyword)}`);
+                    const data = await response.json();
+
+                    // Assuming the API returns an array of synonyms
+                    const synonymsInput = input.parentNode.querySelector('input[name="synonyms"]');
+                    synonymsInput.value = data.tech_words.join(' or '); // Join synonyms array with commas
+                    synonymsInput.readOnly = false; // Make the "synonyms" input editable
+                } catch (error) {
+                    console.error('Error fetching synonyms:', error);
+                }
+            } else {
+                // Reset "synonyms" input if the "keyword" input is empty
+                const synonymsInput = input.parentNode.querySelector('input[name="synonyms"]');
+                synonymsInput.value = '';
+                synonymsInput.readOnly = true;
+            }
+        }
+
+        function addMore(button) {
+            var element = button.parentNode.cloneNode(true);
+            element.querySelector('.add-more').innerText = ' - ';
+            element.querySelector('.add-more').style.background = 'red';
+            element.querySelector('.add-more').setAttribute('onclick', 'deleteElement(this)');
+            // Reset input values in the cloned element
+            var inputs = element.querySelectorAll('input, select');
+            inputs.forEach(function(input) {
+                input.value = '';
+            });
+            document.getElementById('elements-container').appendChild(element);
+        }
+
+        function deleteElement(button) {
+            button.parentNode.remove();
+        }
+    </script>
+{% endblock %}
