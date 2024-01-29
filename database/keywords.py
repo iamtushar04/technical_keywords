@@ -22,14 +22,14 @@ class TechKeywords:
             record = Keywords(keyword=keyword_, tech_words=tech_words, inserted_at=None, updated_at=None)
             self.session.add(record)
             self.session.commit()
-
-        except:
+        except Exception as e:
+            import pdb;pdb.set_trace()
             self.session.rollback()
         finally:
             self.session.close()
 
     def find(self, keyword_: str):
-        result = self.session.query(Keywords.keyword, Keywords.tech_words).filter(or_(Keywords.keyword.like(f"{keyword_}%"), Keywords.tech_words.like(f"{keyword_}%"))).all()
+        result = self.session.query(Keywords.keyword, Keywords.tech_words).filter(or_(Keywords.keyword.like(f"%{keyword_}%"), Keywords.tech_words.like(f"%{keyword_}%"))).all()
         return [{'keyword': keyword, 'tech_words': tech_words} for keyword, tech_words in result]
 
     def get_data(self):
@@ -41,21 +41,30 @@ class TechKeywords:
 
     def update(self, keyword_: str, tech_words: str):
         try:
-            record = self.session.query(Keywords).filter(Keywords.keyword == keyword_).first()
+            record = self.session.query(Keywords).filter(Keywords.keyword == keyword_.lower()).first()
             if record:
                 record.tech_words = tech_words
                 record.updated_at = None
             self.session.commit()
-        except:
+        except Exception as e:
+            import pdb;
+            pdb.set_trace()
             self.session.rollback()
         finally:
             self.session.close()
 
     def delete(self, keyword_: str):
-        record = self.session.query(Keywords).filter(Keywords.keyword == keyword_).first()
-        if record:
-            self.session.delete(record)
-        self.session.commit()
+        try:
+            record = self.session.query(Keywords).filter(Keywords.keyword == keyword_.lower()).first()
+            if record:
+                self.session.delete(record)
+            self.session.commit()
+        except Exception as e:
+            import pdb;
+            pdb.set_trace()
+            self.session.rollback()
+        finally:
+            self.session.close()
 
     def delete_keywords(self, keywords: str):
         keywords = [key.strip().lower() for key in keywords]
@@ -65,7 +74,9 @@ class TechKeywords:
                 for record in records:
                     self.session.delete(record)
                     self.session.commit()
-            except:
+            except Exception as e:
+                import pdb;
+                pdb.set_trace()
                 self.session.rollback()
             finally:
                 self.session.close()
