@@ -25,8 +25,8 @@ class SearchKeywordForm(FlaskForm):
 
 @app.route('/')
 def home():
-    dbase = TechKeywords()
-    keywords = dbase.get_data()
+    # dbase = TechKeywords()
+    keywords = [] #dbase.get_data()
     return render_template('index_home.html', keywords_=keywords)
 
 
@@ -103,7 +103,7 @@ def add_keyword():
                     existing_words = record[0]['tech_words'].split(',')
                     existing_words += tech_words
                     existing_words = [x.strip() for x in existing_words if x != '']
-                    dbase.update(keyword_=keyword, tech_words=', '.join(set(existing_words)))
+                    dbase.update(keyword_=record[0]['keyword'], tech_words=', '.join(set(existing_words)))
                     flash(f"Successfully Updated the keyword {keyword}", category="success")
                 else:
                     dbase.add_keyword(keyword_=keyword, tech_words=form.tech_words.data.lower())
@@ -158,4 +158,4 @@ def delete_tech_words():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=50)
+    app.run(debug=True, port=5006)

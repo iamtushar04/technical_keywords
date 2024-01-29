@@ -2,3 +2,6 @@
 learning/
 .idea/
 /__pycache__/*.*
+__pycache__
+venv
+database/*.db
